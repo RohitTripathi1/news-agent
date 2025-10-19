@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #444;
+}
+
+/* Robot head scanning animation - Smooth left to right scanning */
+@keyframes head-shake {
+  0% {
+    transform: rotate(-30deg);
+  }
+  50% {
+    transform: rotate(30deg);
+  }
+  100% {
+    transform: rotate(-30deg);
+  }
+}
+
+.animate-head-shake {
+  animation: head-shake 2.5s ease-in-out infinite;
+}
+
+/* Progress bar animation */
+@keyframes progress-bar {
+  0% {
+    width: 0%;
+  }
+  50% {
+    width: 70%;
+  }
+  100% {
+    width: 95%;
+  }
+}
+
+.animate-progress-bar {
+  animation: progress-bar 3s ease-in-out infinite;
+}
+
+/* Pulse slow animation */
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
+}
+
+/* Antenna signal animation */
+@keyframes antenna-signal {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(1.5);
+  }
+}
+
+.animate-antenna-signal {
+  animation: antenna-signal 0.8s ease-in-out infinite;
+}
+
