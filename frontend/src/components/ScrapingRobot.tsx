@@ -18,7 +18,7 @@ export default function ScrapingRobot({ isVisible }: ScrapingRobotProps) {
         </p>
       </div>
 
-      {/* Robot with Head Rotation */}
+      {/* Robot with Head Rotations*/} 
       <div className="relative">
         {/* Scanning pulse effect */}
         <div className="absolute inset-0 rounded-full bg-yellow-400 opacity-20 animate-ping"></div>
