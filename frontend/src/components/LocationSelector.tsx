@@ -7,7 +7,11 @@ interface Location {
   country: string
 }
 
-export default function LocationSelector() {
+interface LocationSelectorProps {
+  onSelectionChange: (isSelected: boolean) => void
+}
+
+export default function LocationSelector({ onSelectionChange }: LocationSelectorProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -15,6 +19,11 @@ export default function LocationSelector() {
   const [locationError, setLocationError] = useState<string | null>(null)
   const [searchResults, setSearchResults] = useState<Location[]>([])
   const [isSearching, setIsSearching] = useState(false)
+
+  // Notify parent when selection changes
+  useEffect(() => {
+    onSelectionChange(selectedLocation !== null)
+  }, [selectedLocation, onSelectionChange])
 
   // Search cities using OpenStreetMap Nominatim API
   useEffect(() => {

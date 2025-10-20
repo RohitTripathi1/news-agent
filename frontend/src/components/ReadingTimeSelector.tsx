@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { BookOpen, Zap, Coffee, Book } from 'lucide-react'
 
 interface ReadingTime {
@@ -8,6 +8,10 @@ interface ReadingTime {
   icon: string
   description: string
   wordCount: string
+}
+
+interface ReadingTimeSelectorProps {
+  onSelectionChange: (isSelected: boolean) => void
 }
 
 const readingTimes: ReadingTime[] = [
@@ -45,8 +49,13 @@ const readingTimes: ReadingTime[] = [
   },
 ]
 
-export default function ReadingTimeSelector() {
+export default function ReadingTimeSelector({ onSelectionChange }: ReadingTimeSelectorProps) {
   const [selectedTime, setSelectedTime] = useState<ReadingTime>(readingTimes[0]) // Default: All
+
+  // Notify parent when selection changes
+  useEffect(() => {
+    onSelectionChange(selectedTime !== null)
+  }, [selectedTime, onSelectionChange])
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 transition-colors">

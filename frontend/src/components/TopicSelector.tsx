@@ -1,10 +1,14 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Search, Newspaper, TrendingUp } from 'lucide-react'
 
 interface Topic {
   id: string
   name: string
   icon?: string
+}
+
+interface TopicSelectorProps {
+  onSelectionChange: (isSelected: boolean) => void
 }
 
 const newsTopics: Topic[] = [
@@ -35,10 +39,15 @@ const newsTopics: Topic[] = [
   { id: 'startups', name: 'Startups', icon: '🚀' },
 ]
 
-export default function TopicSelector() {
+export default function TopicSelector({ onSelectionChange }: TopicSelectorProps) {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedTopics, setSelectedTopics] = useState<Topic[]>([])
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+
+  // Notify parent when selection changes
+  useEffect(() => {
+    onSelectionChange(selectedTopics.length > 0)
+  }, [selectedTopics, onSelectionChange])
 
   // Filter topics based on search query
   const filteredTopics = newsTopics.filter(topic =>
