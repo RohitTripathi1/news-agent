@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Loader2, Newspaper, Calendar, Clock, MapPin, Sparkles } from 'lucide-react'
+import { Loader2, Newspaper, Calendar, Clock, MapPin, Sparkles, X } from 'lucide-react'
 
 interface ScrapingRobotProps {
   isVisible: boolean
@@ -20,6 +20,13 @@ export default function ScrapingRobot({ isVisible, isAnimating = false }: Scrapi
       setIsListening(false)
       setIsSpeaking(false)
     }
+  }
+
+  const handleStopVoice = () => {
+    setIsVoiceActive(false)
+    setIsListening(false)
+    setIsSpeaking(false)
+    // TODO: Stop voice recognition and TTS
   }
 
   if (!isVisible) return null
@@ -186,28 +193,45 @@ export default function ScrapingRobot({ isVisible, isAnimating = false }: Scrapi
           </div>
         </div>
 
-        {/* Voice Agent Robot - Bottom Right of News Section */}
-        <div className="absolute bottom-4 right-4 z-20 flex flex-col items-center">
-        {/* Status Badges */}
-        {isVoiceActive && (
-          <div className="flex items-center justify-center gap-2 text-sm font-medium text-white mb-2">
-            {isListening && (
-              <span className="bg-blue-500 px-2 py-1 rounded-full animate-pulse-slow">
-                👂 Listening...
-              </span>
+            {/* Voice Agent Robot - Bottom Right of News Section */}
+            <div className="absolute bottom-2 right-2 sm:bottom-4 sm:right-4 z-20 flex flex-col items-center">
+            {/* User Onboarding Message */}
+            {!isVoiceActive && (
+              <div className="mb-2 sm:mb-3 p-2 sm:p-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg shadow-lg max-w-[200px] sm:max-w-xs text-center animate-pulse-slow">
+                <p className="text-xs sm:text-sm font-medium mb-1">🎤 Voice Agent Ready!</p>
+                <p className="text-[10px] sm:text-xs opacity-90">Click me to start your voice session</p>
+              </div>
             )}
-            {isSpeaking && (
-              <span className="bg-yellow-500 px-2 py-1 rounded-full animate-pulse-slow">
-                🗣️ Speaking...
-              </span>
+
+            {/* Status Badges and Stop Button */}
+            {isVoiceActive && (
+              <div className="flex items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm font-medium text-white mb-2">
+                {isListening && (
+                  <span className="bg-blue-500 px-1.5 sm:px-2 py-1 rounded-full animate-pulse-slow text-[10px] sm:text-xs">
+                    👂 Listening...
+                  </span>
+                )}
+                {isSpeaking && (
+                  <span className="bg-yellow-500 px-1.5 sm:px-2 py-1 rounded-full animate-pulse-slow text-[10px] sm:text-xs">
+                    🗣️ Speaking...
+                  </span>
+                )}
+                {!isListening && !isSpeaking && (
+                  <span className="bg-gray-500 px-1.5 sm:px-2 py-1 rounded-full text-[10px] sm:text-xs">
+                    Inactive
+                  </span>
+                )}
+                
+                {/* Stop Voice Button */}
+                <button
+                  onClick={handleStopVoice}
+                  className="ml-1 sm:ml-2 p-1 bg-red-500 hover:bg-red-600 rounded-full transition-colors duration-200 flex items-center justify-center"
+                  title="Stop Voice Session"
+                >
+                  <X className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
+                </button>
+              </div>
             )}
-            {!isListening && !isSpeaking && (
-              <span className="bg-gray-500 px-2 py-1 rounded-full">
-                Inactive
-              </span>
-            )}
-          </div>
-        )}
 
         {/* Clickable Robot SVG with Sparkle */}
         <button
@@ -216,18 +240,18 @@ export default function ScrapingRobot({ isVisible, isAnimating = false }: Scrapi
             ${isVoiceActive ? 'scale-110' : ''}
             focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:ring-opacity-75
           `}
-          style={{ width: '60px', height: '60px' }} // Ensure button size matches SVG
+          style={{ width: '50px', height: '50px' }} // Smaller on mobile, matches SVG
         >
           {/* Sparkle Effect */}
-          <Sparkles className={`absolute -top-2 -right-2 w-6 h-6 text-yellow-300 ${isVoiceActive ? 'animate-pulse' : ''}`} />
+          <Sparkles className={`absolute -top-1 -right-1 sm:-top-2 sm:-right-2 w-4 h-4 sm:w-6 sm:h-6 text-yellow-300 ${isVoiceActive ? 'animate-pulse' : ''}`} />
           
           <svg
-            width="60"
-            height="60"
+            width="50"
+            height="50"
             viewBox="0 0 120 120"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="drop-shadow-lg" // Add shadow for better visual
+            className="drop-shadow-lg sm:w-[60px] sm:h-[60px]" // Responsive sizing
           >
             {/* Antenna */}
             <line x1="60" y1="15" x2="60" y2="25" stroke="#FFF" strokeWidth="3" strokeLinecap="round" />
