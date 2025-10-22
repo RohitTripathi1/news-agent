@@ -2,6 +2,7 @@ fastapi
 uvicorn[standard]
 pydantic
 requests
-feedparser
-newspaper3k
 python-multipart
+tavily-python
+openai
+python-dotenv
