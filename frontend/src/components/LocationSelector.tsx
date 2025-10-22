@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react'
 import { MapPin, Search, Loader2, AlertCircle } from 'lucide-react'
 
-interface Location {
+export interface Location {
   city: string
   state: string
   country: string
 }
 
 interface LocationSelectorProps {
-  onSelectionChange: (isSelected: boolean) => void
+  onSelectionChange: (location: Location | null) => void
 }
 
 export default function LocationSelector({ onSelectionChange }: LocationSelectorProps) {
@@ -22,7 +22,7 @@ export default function LocationSelector({ onSelectionChange }: LocationSelector
 
   // Notify parent when selection changes
   useEffect(() => {
-    onSelectionChange(selectedLocation !== null)
+    onSelectionChange(selectedLocation)
   }, [selectedLocation, onSelectionChange])
 
   // Search cities using OpenStreetMap Nominatim API

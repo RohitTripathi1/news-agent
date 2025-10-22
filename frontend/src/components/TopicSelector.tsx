@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react'
 import { Search, Newspaper, TrendingUp } from 'lucide-react'
 
-interface Topic {
+export interface Topic {
   id: string
   name: string
-  icon?: string
+  icon: string
 }
 
 interface TopicSelectorProps {
-  onSelectionChange: (isSelected: boolean) => void
+  onSelectionChange: (topics: Topic[]) => void
 }
 
 const newsTopics: Topic[] = [
@@ -46,7 +46,7 @@ export default function TopicSelector({ onSelectionChange }: TopicSelectorProps)
 
   // Notify parent when selection changes
   useEffect(() => {
-    onSelectionChange(selectedTopics.length > 0)
+    onSelectionChange(selectedTopics)
   }, [selectedTopics, onSelectionChange])
 
   // Filter topics based on search query

@@ -1,0 +1,7 @@
+fastapi
+uvicorn[standard]
+pydantic
+requests
+feedparser
+newspaper3k
+python-multipart

@@ -37,21 +37,28 @@ body {
   background: #444;
 }
 
-/* Robot head scanning animation - Smooth left to right scanning */
-@keyframes head-shake {
+/* Robot head scanning animation - Like reading across the web */
+@keyframes head-scan {
   0% {
-    transform: rotate(-30deg);
+    transform: rotate(-15deg);
+  }
+  25% {
+    transform: rotate(-5deg);
   }
   50% {
-    transform: rotate(30deg);
+    transform: rotate(15deg);
+  }
+  75% {
+    transform: rotate(5deg);
   }
   100% {
-    transform: rotate(-30deg);
+    transform: rotate(-15deg);
   }
 }
 
 .animate-head-shake {
-  animation: head-shake 2.5s ease-in-out infinite;
+  animation: head-scan 3s ease-in-out infinite;
+  transform-origin: center bottom;
 }
 
 /* Progress bar animation */

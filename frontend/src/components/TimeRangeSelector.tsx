@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Clock, Calendar } from 'lucide-react'
 
-interface TimeRange {
+export interface TimeRange {
   id: string
   label: string
   value: string
@@ -9,7 +9,7 @@ interface TimeRange {
 }
 
 interface TimeRangeSelectorProps {
-  onSelectionChange: (isSelected: boolean) => void
+  onSelectionChange: (range: TimeRange) => void
 }
 
 const timeRanges: TimeRange[] = [
@@ -28,9 +28,8 @@ export default function TimeRangeSelector({ onSelectionChange }: TimeRangeSelect
 
   // Notify parent when selection changes
   useEffect(() => {
-    const isSelected = selectedRange.id !== 'custom' || (startDate && endDate)
-    onSelectionChange(isSelected)
-  }, [selectedRange, startDate, endDate, onSelectionChange])
+    onSelectionChange(selectedRange)
+  }, [selectedRange, onSelectionChange])
 
   const handleSelectRange = (range: TimeRange) => {
     setSelectedRange(range)
