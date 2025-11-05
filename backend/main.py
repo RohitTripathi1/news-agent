@@ -1,13 +1,18 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import Response
 from pydantic import BaseModel
 from typing import List, Optional
 from ai_agent_simple import NewsAIAgent
+from voice_agent import VoiceAgent
 
 app = FastAPI(title="News Agent API", version="1.0.0")
 
 # Initialize AI Agent
 ai_agent = NewsAIAgent()
+
+# Initialize Voice Agent
+voice_agent = VoiceAgent()
 
 # Enable CORS for frontend communication
 app.add_middleware(
@@ -52,6 +57,9 @@ class NewsResponse(BaseModel):
     articles: List[NewsArticle]
     total_count: int
     message: str
+
+class VoiceQueryRequest(BaseModel):
+    query: str
 
 
 @app.get("/")
@@ -107,6 +115,137 @@ async def get_news(request: NewsRequest):
     except Exception as e:
         print(f"❌ Error fetching news: {e}")
         raise HTTPException(status_code=500, detail=f"Error fetching news: {str(e)}")
+
+
+# Voice Agent Endpoints
+
+@app.post("/api/voice/transcribe")
+async def transcribe_audio(audio: UploadFile = File(...)):
+    """
+    Transcribe audio to text using Whisper (free, local model)
+    
+    Args:
+        audio: Audio file (webm, mp3, wav, etc.)
+        
+    Returns:
+        JSON with transcript text
+    """
+    try:
+        print(f"🎤 Transcribing audio using Whisper: {audio.filename}")
+        
+        transcript = voice_agent.transcribe_audio(audio.file)
+        
+        return {
+            "success": True,
+            "transcript": transcript
+        }
+        
+    except Exception as e:
+        print(f"❌ Transcription error: {e}")
+        raise HTTPException(status_code=500, detail=f"Transcription failed: {str(e)}")
+
+
+@app.post("/api/voice/tts")
+async def text_to_speech(request: dict):
+    """
+    Convert text to speech using pyttsx3 (free, uses OS TTS)
+    
+    Args:
+        request: JSON with 'text' field
+        
+    Returns:
+        Audio file (WAV format)
+    """
+    try:
+        text = request.get('text', '')
+        if not text:
+            raise HTTPException(status_code=400, detail="Text is required")
+        
+        print(f"🔊 Converting text to speech: {text[:50]}...")
+        
+        audio_data = voice_agent.text_to_speech(text)
+        
+        return Response(
+            content=audio_data,
+            media_type="audio/wav"
+        )
+        
+    except Exception as e:
+        print(f"❌ TTS error: {e}")
+        raise HTTPException(status_code=500, detail=f"TTS failed: {str(e)}")
+
+
+@app.post("/api/voice/generate-response")
+async def generate_voice_response(request: VoiceQueryRequest):
+    """
+    Generate AI response to user query (text)
+    
+    Can use browser Web Speech API (frontend) OR backend Whisper/pyttsx3
+    This endpoint generates AI responses using Hugging Face models or simple fallback
+    
+    Args:
+        request: VoiceQueryRequest with 'query' field containing user's text
+        
+    Returns:
+        JSON with AI response text
+    """
+    try:
+        user_query = request.query
+        if not user_query:
+            raise HTTPException(status_code=400, detail="Query is required")
+        
+        print(f"🤖 Generating AI response for: {user_query}")
+        
+        # Generate AI response (Hugging Face models or simple fallback)
+        ai_response = voice_agent.generate_response(user_query)
+        
+        return {
+            "success": True,
+            "response": ai_response
+        }
+        
+    except Exception as e:
+        print(f"❌ Error generating response: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate response: {str(e)}")
+
+
+@app.post("/api/voice/complete-pipeline")
+async def complete_voice_pipeline(audio: UploadFile = File(...)):
+    """
+    Complete voice pipeline: STT -> AI Response -> TTS
+    Uses Whisper (STT) and pyttsx3 (TTS) - all free, local models
+    
+    Args:
+        audio: Audio file with user's question
+        
+    Returns:
+        Audio file (WAV) with AI response
+    """
+    try:
+        print(f"🎤 Processing complete voice pipeline: {audio.filename}")
+        
+        # Step 1: Transcribe (Whisper)
+        transcript = voice_agent.transcribe_audio(audio.file)
+        
+        # Step 2: Generate AI response
+        ai_response = voice_agent.generate_response(transcript)
+        
+        # Step 3: Convert to speech (pyttsx3)
+        audio_data = voice_agent.text_to_speech(ai_response)
+        
+        return Response(
+            content=audio_data,
+            media_type="audio/wav",
+            headers={
+                "X-Transcript": transcript,
+                "X-Response": ai_response[:200]
+            }
+        )
+        
+    except Exception as e:
+        print(f"❌ Voice pipeline error: {e}")
+        raise HTTPException(status_code=500, detail=f"Voice pipeline failed: {str(e)}")
+
 
 if __name__ == "__main__":
     import uvicorn

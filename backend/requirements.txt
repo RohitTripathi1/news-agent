@@ -4,5 +4,12 @@ pydantic
 requests
 python-multipart
 tavily-python
-openai
 python-dotenv
+openai-whisper
+pyttsx3
+transformers
+torch
+torchaudio
+soundfile
+numpy
+huggingface-hub

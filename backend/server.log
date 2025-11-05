@@ -1,0 +1,47 @@
+Device set to use cpu
+Using `chunk_length_s` is very experimental with seq2seq models. The results will not necessarily be entirely accurate and will have caveats. More information: https://github.com/huggingface/transformers/pull/20104. Ignore this warning with pipeline(..., ignore_warning=True). To use Whisper for long-form transcription, use rather the model's `generate` method directly as the model relies on it's own chunking mechanism (cf. Whisper original paper, section 3.8. Long-form Transcription).
+INFO:     Started server process [96922]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8002 (Press CTRL+C to quit)
+⚠️  openai-whisper not installed. STT will not work.
+⚠️  pyttsx3 not installed. TTS will not work.
+ℹ️  No HUGGINGFACE_API_TOKEN found. Using local models.
+📥 Loading Hugging Face models (this may take a moment on first run)...
+   Using device: cpu
+   Loading OpenAI Whisper Small model from Hugging Face...
+✅ OpenAI Whisper Small (Hugging Face) STT model loaded
+⚠️  Failed to load HF TTS: 
+SpeechT5Tokenizer requires the SentencePiece library but it was not found in your environment. Check out the instructions on the
+installation page of its repo: https://github.com/google/sentencepiece#installation and follow the ones
+that match your environment. Please note that you may need to restart your runtime after installation.
+
+✅ Tavily client initialized (for news search in voice responses)
+ℹ️  No Gemini API key. Using Tavily or simple responses.
+INFO:     127.0.0.1:57874 - "GET / HTTP/1.1" 200 OK
+🤖 Generating AI response for: who is the Prime Minister of India
+🔍 Searching using Tavily for: who is the Prime Minister of India
+✅ Generated response using Tavily: Based on what I found, here's the information: 
+1. Prime Minister of India - Wikipedia: [Jump to con...
+INFO:     127.0.0.1:57925 - "POST /api/voice/generate-response HTTP/1.1" 200 OK
+🤖 Generating AI response for: who is the Prime Minister of India
+🔍 Searching using Tavily for: who is the Prime Minister of India
+✅ Generated response using Tavily: Based on what I found, here's the information: 
+1. Prime Minister of India - Wikipedia: [Jump to con...
+INFO:     127.0.0.1:57994 - "POST /api/voice/generate-response HTTP/1.1" 200 OK
+🤖 Generating AI response for: who is the Prime Minister of India
+🔍 Searching using Tavily for: who is the Prime Minister of India
+✅ Generated response using Tavily: Based on what I found, here's the information: 
+1. Prime Minister of India - Wikipedia: [Jump to con...
+INFO:     127.0.0.1:58053 - "POST /api/voice/generate-response HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58558 - "GET / HTTP/1.1" 200 OK
+🤖 Generating AI response for: who is the Prime Minister of India
+🔍 Searching using Tavily for: who is the Prime Minister of India
+✅ Generated response using Tavily: Based on what I found, here's the information: 
+1. Prime Minister of India - Wikipedia: [Jump to con...
+INFO:     127.0.0.1:58575 - "POST /api/voice/generate-response HTTP/1.1" 200 OK
+🤖 Generating AI response for: who is the Prime Minister of India
+🔍 Searching using Tavily for: who is the Prime Minister of India
+✅ Generated response using Tavily: Based on what I found, here's the information: 
+1. Prime Minister of India - Wikipedia: [Jump to con...
+INFO:     127.0.0.1:58713 - "POST /api/voice/generate-response HTTP/1.1" 200 OK
